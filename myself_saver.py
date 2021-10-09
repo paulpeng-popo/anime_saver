@@ -42,11 +42,13 @@ if __name__ == "__main__":
     app = Application(master=root)
 
     HomePage_Controller = HomePageController()
+    EveryWeekRenew_controller = HomePageController()
+    Continue_Controller = HomePageController()
     app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="首頁/人氣排行")
-    app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="每週更新")
-    app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="連載中")
-    app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="完結動畫")
-    app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="完結列表")
-    app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="動漫資訊")
+    # app.new_tab(view=AnimeBlock, controller=EveryWeekRenew_controller, name="每週更新")
+    # app.new_tab(view=AnimeBlock, controller=Continue_Controller, name="連載中")
+    # app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="完結動畫")
+    # app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="完結列表")
+    # app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="動漫資訊")
 
     app.mainloop()

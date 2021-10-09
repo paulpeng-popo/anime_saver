@@ -38,7 +38,10 @@ class Worker(threading.Thread):
 			segment_filename = self.ts_queue[-1]
 
 			try: video_stream = requests.get(headers=self.Header, url=url+segment_filename, stream=True)
-			except ConnectionError as exception_message: continue
+			except Exception as error:
+				print("Some error occurs")
+				sleep(5)
+				continue
 
 			if video_stream.status_code == 200:
 				with open(os.path.join(segment_dir, segment_filename), "wb") as file:
@@ -81,7 +84,10 @@ class Worker(threading.Thread):
 					print(segment_dir, file, "file miss")
 					print(url+file)
 					try: video_stream = requests.get(headers=self.Header, url=url+file, stream=True)
-					except ConnectionError as exception_message: continue
+					except Exception as error:
+						print("Some error occurs")
+						sleep(5)
+						continue
 
 					if video_stream.status_code == 200:
 						with open(os.path.join(segment_dir, file), "wb") as ifile:
@@ -89,13 +95,12 @@ class Worker(threading.Thread):
 							shutil.copyfileobj(video_stream.raw, ifile)
 						ifile.close()
 						print(segment_dir, file, "file download successfully")
-			sleep(5)
 		f.close()
 
 	def run(self):
 		while len(self.queue) > 0:
 			video_name, playlist_url = self.get_link_info()
-			playlist = m3u8.load(playlist_url)
+			playlist = m3u8.load(playlist_url, verify_ssl=False)
 			url = playlist_url[:playlist_url.rfind('/')+1]
 
 			ts_list = []
@@ -156,5 +161,5 @@ def video_download(Url, NumOfWorker):
 		print("Done")
 
 if __name__ == '__main__':
-	target = 'https://myself-bbs.com/forum.php?mod=viewthread&tid=46116&highlight=%E4%B8%8D%E8%B5%B7%E7%9C%BC%E5%A5%B3%E4%B8%BB%E8%A7%92%E5%9F%B9%E8%82%B2%E6%B3%95'
+	target = ''
 	video_download(target, 12)
