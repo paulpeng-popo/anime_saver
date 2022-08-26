@@ -1,2 +1,3 @@
 src/animes/*
 *.mp4
+gui/__pycache__/*
