@@ -1,12 +1,17 @@
-import re
-import os
-import lxml
-import shutil
-import requests
+""" import required modules """
 import concurrent.futures
+import json
+import os
+import re
+import shutil
+
+import requests
 from bs4 import BeautifulSoup
 
+
 class GetHomePageAnime():
+
+	""" GetHomePageAnime class """
 
 	def __init__(self):
 		self.BaseUrl = "https://myself-bbs.com/"
@@ -21,9 +26,9 @@ class GetHomePageAnime():
 		if not os.path.exists(filename):
 			response = requests.get(headers=self.Header, url=self.BaseUrl+image_data, stream=True)
 			if response.status_code == 200:
-			    with open(filename, 'wb') as f:
-			        response.raw.decode_content = True
-			        shutil.copyfileobj(response.raw, f)
+				with open(filename, 'wb') as f:
+					response.raw.decode_content = True
+					shutil.copyfileobj(response.raw, f)
 
 	def start_crawler(self):
 		try:
@@ -78,6 +83,9 @@ class GetHomePageAnime():
 
 		return area_set
 
+
 if __name__ == "__main__":
 	app = GetHomePageAnime()
-	print(app.start_crawler())
+	f = open(os.path.join(os.getcwd(), "animes.json"), "w")
+	json.dump(app.start_crawler(), f, indent=4)
+	f.close()

@@ -1,7 +1,8 @@
 import tkinter as tk
-from tkinter import ttk
-from PIL import Image, ImageTk
 from abc import abstractmethod
+
+from PIL import Image, ImageTk
+
 
 class View(tk.Frame):
 
@@ -21,7 +22,17 @@ class AnimeBlock(View):
         self.folder = "src/animes/"
         self.canvas = tk.Canvas(self, width=1400, height=680)
         self.canvas.place(relx=0, rely=0, relheight=1, relwidth=1)
-        self.controll_frame = tk.Frame(self.canvas, bg='BlanchedAlmond', width=1400, height=3200)
+
+        self.controll_frame = tk.Frame(
+            self.canvas,
+            bg='BlanchedAlmond',
+            width=1400, height=3500
+        )
+
+        # bg_image = ImageTk.PhotoImage(Image.open("src/body.jpg").resize((1400, 680), Image.ANTIALIAS))
+        # bg_label = tk.Label(self.controll_frame, image=bg_image)
+        # bg_label.image = bg_image
+        # bg_label.place(x=0, y=0)
 
     def create_view(self, AnimeData: list):
 

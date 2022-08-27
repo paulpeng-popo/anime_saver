@@ -1,20 +1,25 @@
-from gui.models import GetHomePageAnime
-from gui.views import View, AnimeBlock
+""" import required modules """
 from abc import ABC, abstractmethod
-import gui.downloader as downloader
-from time import sleep
-from tkinter import ttk
-import tkinter as tk
-import webbrowser
-import threading
+
+from gui.models import GetHomePageAnime
+from gui.views import View
+
 
 class Controller(ABC):
 
+    """ Controller abstract class """
+
     @abstractmethod
-    def bind(view: View):
+    def bind(self, view: View):
+
+        """ bind view to controller """
+
         raise NotImplementedError
 
+
 class HomePageController(Controller):
+
+    """ HomePageController class """
 
     def __init__(self):
         self.model = GetHomePageAnime()
@@ -47,8 +52,9 @@ class HomePageController(Controller):
         return lambda event: self.callback(event, url)
 
     def callback(self, event, url):
-        t = threading.Thread(target=downloader.video_download, args = (url, 12,))
-        t.start()
+        print(url)
+        # t = threading.Thread(target=downloader.video_download, args = (url, 12,))
+        # t.start()
 
     def _bound_to_mousewheel(self, event):
         self.view.canvas.bind_all(
