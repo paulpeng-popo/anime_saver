@@ -1,3 +1,4 @@
 src/animes/*
 *.mp4
 gui/__pycache__/*
+animes.json

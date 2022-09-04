@@ -1,20 +1,15 @@
-""" import required modules """
 import os
 import tkinter as tk
 from tkinter import ttk
 
-# from gui.models import GetHomePageAnime
-from gui.controllers import Controller, HomePageController
-from gui.views import AnimeBlock, View
+from gui.controllers import (Controller, EveryWeekRenewController,
+                             HomePageController)
+from gui.views import AnimeBlock, AnimeList, View
 
 
 class Application(ttk.Notebook):
 
-    """ Anime Saver Application """
-
     def __init__(self, master=None):
-
-        """ constructor """
 
         super().__init__(master)
         self.master = master
@@ -27,15 +22,11 @@ class Application(ttk.Notebook):
 
     def new_tab(self, controller: Controller, view: View, name: str):
 
-        """ create a new tab """
-
         view = view(self)
         controller.bind(view)
         self.add(view, text=name)
         self.pack(expand=1, fill='both')
 
-
-# main function
 
 if __name__ == "__main__":
 
@@ -56,10 +47,10 @@ if __name__ == "__main__":
     app = Application(master=root)
 
     HomePage_Controller = HomePageController()
-    # EveryWeekRenew_controller = HomePageController()
+    EveryWeekRenew_controller = EveryWeekRenewController()
     # Continue_Controller = HomePageController()
     app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="首頁/人氣排行")
-    # app.new_tab(view=AnimeBlock, controller=EveryWeekRenew_controller, name="每週更新")
+    app.new_tab(view=AnimeList, controller=EveryWeekRenew_controller, name="每週更新")
     # app.new_tab(view=AnimeBlock, controller=Continue_Controller, name="連載中")
     # app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="完結動畫")
     # app.new_tab(view=AnimeBlock, controller=HomePage_Controller, name="完結列表")

@@ -1,4 +1,3 @@
-""" import required modules """
 import concurrent.futures
 import json
 import os
@@ -10,8 +9,6 @@ from bs4 import BeautifulSoup
 
 
 class GetHomePageAnime():
-
-	""" GetHomePageAnime class """
 
 	def __init__(self):
 		self.BaseUrl = "https://myself-bbs.com/"
@@ -84,8 +81,62 @@ class GetHomePageAnime():
 		return area_set
 
 
+class GetEveryWeekAnime():
+
+	def __init__(self):
+		self.BaseUrl = "https://myself-bbs.com/"
+		self.Url = 'https://myself-bbs.com/portal.php'
+		self.Header = { "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N)\
+						 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Mobile Safari/537.36" }
+
+	def start_crawler(self):
+		try:
+			response = requests.get(headers=self.Header, url=self.Url)
+		except requests.exceptions.ConnectionError:
+			print("ConnectionError")
+			exit(1)
+
+		area_set = {}
+
+		soup = BeautifulSoup(response.text, 'lxml')
+
+		Anime_title = ["portal_block_955_content", "portal_block_956_content", "portal_block_957_content", "portal_block_958_content", "portal_block_959_content", "portal_block_960_content", "portal_block_961_content"]
+
+		for week, id in enumerate(Anime_title):
+
+			Anime_area = soup.find("div", {"id": id}, {"class": "dxb_bc"})
+			Anime_blocks_contents = Anime_area.find_all('div', {"class": "module cl xl xl1"})
+
+			for segment in Anime_blocks_contents:
+				result = segment.find_all('li')
+				if result != []:
+					area_set[week+1] = result
+
+		for num, segment in enumerate(area_set.values()):
+
+			one_week_anime = []
+
+			for item in segment:
+
+				page_link = item.find('a').attrs['href']
+				anime_title = item.find('a').attrs['title']
+				anime_text = item.find('span').text.strip()
+				anime_info = {"title": anime_title, "text": anime_text, "link": page_link}
+				
+				one_week_anime.append(anime_info)
+			
+			area_set[num+1] = one_week_anime
+
+		return area_set
+
+
 if __name__ == "__main__":
-	app = GetHomePageAnime()
+	# app = GetHomePageAnime()
+	# f = open(os.path.join(os.getcwd(), "animes.json"), "w")
+	# json.dump(app.start_crawler(), f, indent=4)
+	# f.close()
+
+	app = GetEveryWeekAnime()
 	f = open(os.path.join(os.getcwd(), "animes.json"), "w")
 	json.dump(app.start_crawler(), f, indent=4)
 	f.close()
