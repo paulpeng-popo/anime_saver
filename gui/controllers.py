@@ -1,5 +1,7 @@
+import threading
 from abc import ABC, abstractmethod
 
+from gui.downloader import video_download
 from gui.models import GetEveryWeekAnime, GetHomePageAnime
 from gui.views import View
 
@@ -45,9 +47,8 @@ class HomePageController(Controller):
         return lambda event: self.callback(event, url)
 
     def callback(self, event, url):
-        print(url)
-        # t = threading.Thread(target=video_download, args = (url, 12,))
-        # t.start()
+        t = threading.Thread(target=video_download, args = (url, 12,))
+        t.start()
 
     def _bound_to_mousewheel(self, event):
         self.view.canvas.bind_all(
@@ -93,7 +94,7 @@ class EveryWeekRenewController(Controller):
 
     def callback(self, event, url):
         print(url)
-        # t = threading.Thread(target=downloader.video_download, args = (url, 12,))
+        # t = threading.Thread(target=video_download, args = (url, 12,))
         # t.start()
 
     def _bound_to_mousewheel(self, event):

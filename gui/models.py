@@ -140,3 +140,5 @@ if __name__ == "__main__":
 	f = open(os.path.join(os.getcwd(), "animes.json"), "w")
 	json.dump(app.start_crawler(), f, indent=4)
 	f.close()
+	
+	pass
