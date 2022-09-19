@@ -1,14 +1,15 @@
+import ast
 import os
 import re
-import ast
-import lxml
-import m3u8
 import shutil
-import requests
 import threading
-from time import sleep
-from bs4 import BeautifulSoup
 from collections import deque
+from time import sleep
+
+import m3u8
+import requests
+from bs4 import BeautifulSoup
+
 
 class Worker(threading.Thread):
 
